@@ -10,11 +10,6 @@ type Server struct {
 	hosts []string
 }
 
-type Task struct {
-	name   string
-	script string
-}
-
 type TaskContainer struct {
 	Servers map[string]Server
 	Tasks   map[string]Task
@@ -65,6 +60,26 @@ func (c *TaskContainer) HasOneServer() bool {
 	return len(c.Servers) == 1
 }
 
-func (c *TaskContainer) GetServer(name string) Server {
-	return c.Servers[name]
+func (c *TaskContainer) GetServer(name string) (*Server, error) {
+	server, ok := c.Servers[name]
+
+	if !ok {
+		return nil, fmt.Errorf("Server [%s] is not defined", name)
+	}
+
+	return &server, nil
+}
+
+func (c *TaskContainer) GetTask(name string) (*Task, error) {
+	task, ok := c.Tasks[name]
+
+	if !ok {
+		return nil, fmt.Errorf("Task \"%s\" is not defined", name)
+	}
+
+	if task.script == "" {
+		return nil, fmt.Errorf("Task \"%s\" has no script", name)
+	}
+
+	return &task, nil
 }

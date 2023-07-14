@@ -8,19 +8,28 @@ import (
 	"github.com/spf13/cobra"
 )
 
+func getServer(container TaskContainer, args []string) (*Server, error) {
+	if len(args) == 1 {
+		return container.GetServer(args[0])
+	}
+
+	if container.HasOneServer() {
+		server := container.GetFirstServer()
+		return &server, nil
+	}
+
+	return nil, fmt.Errorf("%s", "Please provide a server name")
+}
+
 var sshCmd = &cobra.Command{
 	Use:   "ssh <name>",
 	Short: "Connect to an Envoy server.",
 	Args:  cobra.MaximumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		container := LoadTaskContainer()
-		var server Server
-		if len(args) == 1 {
-			server = container.GetServer(args[0])
-		} else if container.HasOneServer() {
-			server = container.GetFirstServer()
-		} else {
-			fmt.Println("Please provide a server name.")
+		server, err := getServer(container, args)
+		if err != nil {
+			fmt.Println(err)
 			return
 		}
 
@@ -30,9 +39,7 @@ var sshCmd = &cobra.Command{
 		ssh.Stderr = os.Stderr
 		ssh.Stdout = os.Stdout
 
-		err := ssh.Run()
-
-		if err != nil {
+		if err := ssh.Run(); err != nil {
 			fmt.Println(err)
 		}
 	},
