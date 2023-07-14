@@ -9,16 +9,13 @@ import (
 )
 
 func getServer(container TaskContainer, args []string) (*Server, error) {
-	if len(args) == 1 {
-		return container.GetServer(args[0])
+	var name string
+	if len(args) < 1 {
+		name = "web"
+	} else {
+		name = args[0]
 	}
-
-	if container.HasOneServer() {
-		server := container.GetFirstServer()
-		return &server, nil
-	}
-
-	return nil, fmt.Errorf("%s", "Please provide a server name")
+	return container.GetServer(name)
 }
 
 var sshCmd = &cobra.Command{
@@ -27,6 +24,7 @@ var sshCmd = &cobra.Command{
 	Args:  cobra.MaximumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		container := LoadTaskContainer()
+
 		server, err := getServer(container, args)
 		if err != nil {
 			fmt.Println(err)

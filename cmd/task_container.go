@@ -47,19 +47,6 @@ func LoadTaskContainer() TaskContainer {
 	return taskContainer
 }
 
-func (c *TaskContainer) GetFirstServer() Server {
-	var server Server
-	for _, v := range c.Servers {
-		server = v
-		break
-	}
-	return server
-}
-
-func (c *TaskContainer) HasOneServer() bool {
-	return len(c.Servers) == 1
-}
-
 func (c *TaskContainer) GetServer(name string) (*Server, error) {
 	server, ok := c.Servers[name]
 
@@ -79,6 +66,10 @@ func (c *TaskContainer) GetTask(name string) (*Task, error) {
 
 	if task.script == "" {
 		return nil, fmt.Errorf("Task \"%s\" has no script", name)
+	}
+
+	for _, v := range c.Servers {
+		task.hosts = append(task.hosts, v.hosts...)
 	}
 
 	return &task, nil
