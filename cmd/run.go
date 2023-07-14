@@ -21,13 +21,14 @@ func runTask(container TaskContainer, name string) {
 	}
 
 	for _, host := range task.hosts {
-		err := task.Run(host, func(target string, line string) {
-			fmt.Printf("[%s]: %s", target, line)
-		})
-		if err != nil {
+		if err := task.Run(host, DisplayOutput); err != nil {
 			fmt.Println(err)
 		}
 	}
+}
+
+func DisplayOutput(host string, line string) {
+	fmt.Printf("[%s]: %s", host, line)
 }
 
 var runCmd = &cobra.Command{
