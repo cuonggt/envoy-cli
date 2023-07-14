@@ -2,9 +2,8 @@ package cmd
 
 import (
 	"fmt"
-	"os"
 
-	"gopkg.in/yaml.v3"
+	"github.com/spf13/viper"
 )
 
 type Server struct {
@@ -21,49 +20,29 @@ type TaskContainer struct {
 	Tasks   map[string]Task
 }
 
-type Envoyfile struct {
-	Servers map[string]interface{}       `yaml:"servers"`
-	Tasks   map[string]map[string]string `yaml:"tasks"`
-}
-
 func LoadTaskContainer() TaskContainer {
 	var taskContainer TaskContainer = TaskContainer{
 		Servers: make(map[string]Server),
 		Tasks:   make(map[string]Task),
 	}
 
-	data, err := os.ReadFile("./Envoyfile")
-	if err != nil {
+	viper.SetConfigName("Envoyfile")
+	viper.AddConfigPath(".")
+	viper.SetConfigType("yaml")
+
+	if err := viper.ReadInConfig(); err != nil {
 		fmt.Println(err)
 		return taskContainer
 	}
 
-	var envoyfile Envoyfile
-
-	err = yaml.Unmarshal(data, &envoyfile)
-	if err != nil {
-		fmt.Println(err)
-		return taskContainer
-	}
-
-	for k, v := range envoyfile.Servers {
-		switch c := v.(type) {
-		case string:
-			taskContainer.Servers[k] = Server{
-				hosts: []string{c},
-			}
-		case interface{}:
-			server := Server{
-				hosts: make([]string, len(v.([]interface{}))),
-			}
-			for index, host := range v.([]interface{}) {
-				server.hosts[index] = host.(string)
-			}
-			taskContainer.Servers[k] = server
+	for k := range viper.GetStringMap("servers") {
+		taskContainer.Servers[k] = Server{
+			hosts: viper.GetStringSlice("servers." + k),
 		}
 	}
 
-	for k, task := range envoyfile.Tasks {
+	for k := range viper.GetStringMap("tasks") {
+		task := viper.GetStringMapString("tasks." + k)
 		taskContainer.Tasks[k] = Task{
 			name:   k,
 			script: task["script"],

@@ -23,13 +23,12 @@ var runCmd = &cobra.Command{
 		}
 
 		target := container.GetFirstServer().hosts[0]
-		fmt.Println("Connecting to " + target + "...")
 
-		command := fmt.Sprintf(`bash -se \EOF
+		command := fmt.Sprintf(`bash -se \EOF-ENVOY
 
 set -e
 %s
-EOF`, task.script)
+EOF-ENVOY`, task.script)
 
 		process := exec.Command("ssh", target, command)
 
