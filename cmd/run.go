@@ -8,6 +8,13 @@ import (
 
 var pretend bool
 
+func getTasks(container TaskContainer, taskName string) []string {
+	if story := container.GetStory(taskName); story != nil {
+		return story
+	}
+	return []string{taskName}
+}
+
 func runTask(container TaskContainer, name string) {
 	task, err := container.GetTask(name)
 	if err != nil {
@@ -38,7 +45,7 @@ var runCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		container := LoadTaskContainer()
 
-		tasks := []string{args[0]}
+		tasks := getTasks(container, args[0])
 
 		for _, v := range tasks {
 			runTask(container, v)

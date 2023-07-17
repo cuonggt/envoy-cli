@@ -13,6 +13,7 @@ type Server struct {
 type TaskContainer struct {
 	Servers map[string]Server
 	Tasks   map[string]Task
+	Stories map[string][]string
 }
 
 func LoadTaskContainer() TaskContainer {
@@ -51,6 +52,8 @@ func LoadTaskContainer() TaskContainer {
 		}
 	}
 
+	taskContainer.Stories = viper.GetStringMapStringSlice("stories")
+
 	return taskContainer
 }
 
@@ -76,4 +79,12 @@ func (c *TaskContainer) GetTask(name string) (*Task, error) {
 	}
 
 	return &task, nil
+}
+
+func (c *TaskContainer) GetStory(name string) []string {
+	story, ok := c.Stories[name]
+	if !ok {
+		return nil
+	}
+	return story
 }
