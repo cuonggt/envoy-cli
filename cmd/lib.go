@@ -1,8 +1,6 @@
 package cmd
 
 import (
-	"fmt"
-
 	"github.com/gookit/color"
 )
 
@@ -16,7 +14,8 @@ func InSlice(needle string, haystack []string) bool {
 }
 
 func DisplayOutput(host string, line string) {
-	fmt.Printf("[%s]: %s", host, line)
+	color.Yellow.Printf("[%s]", host)
+	color.Printf(": %s", line)
 }
 
 func OutputError(message string) {
