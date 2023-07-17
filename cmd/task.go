@@ -8,21 +8,14 @@ import (
 
 type Task struct {
 	name   string
-	script string
 	hosts  []string
+	script string
 }
 
 func (t *Task) GetProcess(host string) (string, *exec.Cmd) {
 	localhosts := []string{"local", "localhost", "127.0.0.1"}
-	isLocalTask := false
-	for _, v := range localhosts {
-		if v == host {
-			isLocalTask = true
-			break
-		}
-	}
 
-	if isLocalTask {
+	if InSlice(host, localhosts) {
 		return host, exec.Command("/bin/bash", "-c", t.script)
 	}
 

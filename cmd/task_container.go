@@ -30,17 +30,24 @@ func LoadTaskContainer() TaskContainer {
 		return taskContainer
 	}
 
-	for k := range viper.GetStringMap("servers") {
-		taskContainer.Servers[k] = Server{
-			hosts: viper.GetStringSlice("servers." + k),
+	for serverName := range viper.GetStringMap("servers") {
+		taskContainer.Servers[serverName] = Server{
+			hosts: viper.GetStringSlice("servers." + serverName),
 		}
 	}
 
-	for k := range viper.GetStringMap("tasks") {
-		task := viper.GetStringMapString("tasks." + k)
-		taskContainer.Tasks[k] = Task{
-			name:   k,
-			script: task["script"],
+	for taskName := range viper.GetStringMap("tasks") {
+		on := viper.GetStringSlice("tasks." + taskName + ".on")
+		hosts := []string{}
+		for k, v := range taskContainer.Servers {
+			if len(on) == 0 || InSlice(k, on) {
+				hosts = append(hosts, v.hosts...)
+			}
+		}
+		taskContainer.Tasks[taskName] = Task{
+			name:   taskName,
+			script: viper.GetString("tasks." + taskName + ".script"),
+			hosts:  hosts,
 		}
 	}
 
@@ -66,10 +73,6 @@ func (c *TaskContainer) GetTask(name string) (*Task, error) {
 
 	if task.script == "" {
 		return nil, fmt.Errorf("Task \"%s\" has no script", name)
-	}
-
-	for _, v := range c.Servers {
-		task.hosts = append(task.hosts, v.hosts...)
 	}
 
 	return &task, nil
