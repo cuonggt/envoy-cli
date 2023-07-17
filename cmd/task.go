@@ -22,7 +22,7 @@ func (t Task) GetProcess(host string) Process {
 		}
 	}
 
-	command := fmt.Sprintf(`bash -se \EOF-ENVOY
+	command := fmt.Sprintf(`bash -se << \EOF-ENVOY
 
 set -e
 %s

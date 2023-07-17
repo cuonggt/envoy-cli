@@ -2,7 +2,9 @@ package cmd
 
 import (
 	"fmt"
+	"strings"
 
+	"github.com/gookit/color"
 	"github.com/spf13/cobra"
 )
 
@@ -35,7 +37,21 @@ func runTaskOverSSH(task Task) {
 }
 
 func passToRemoteProcessor(task Task) {
-	getRemoteProcessor(task).Run(task)
+	getRemoteProcessor(task).Run(task, func(outType string, host string, line string) {
+		if strings.HasPrefix(line, "Warning: Permanently added ") {
+			return
+		}
+		line = strings.TrimSpace(line)
+		if line == "" {
+			return
+		}
+		color.Yellow.Printf("[%s]", host)
+		if outType == "err" {
+			color.Red.Printf(": %s\n", line)
+		} else {
+			color.Printf(": %s\n", line)
+		}
+	})
 }
 
 func getRemoteProcessor(task Task) RemoteProcessor {

@@ -8,7 +8,7 @@ import (
 type ParallelSSH struct {
 }
 
-func (s ParallelSSH) Run(task Task) {
+func (s ParallelSSH) Run(task Task, callback func(string, string, string)) {
 	processes := task.GetProcesses()
 
 	var wg sync.WaitGroup
@@ -20,7 +20,7 @@ func (s ParallelSSH) Run(task Task) {
 
 		go func() {
 			defer wg.Done()
-			if err := process.Run(DisplayOutput); err != nil {
+			if err := process.Run(callback); err != nil {
 				fmt.Println(err)
 			}
 		}()

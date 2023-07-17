@@ -13,11 +13,6 @@ func InSlice(needle string, haystack []string) bool {
 	return false
 }
 
-func DisplayOutput(host string, line string) {
-	color.Yellow.Printf("[%s]", host)
-	color.Printf(": %s", line)
-}
-
 func OutputError(message string) {
 	color.Style{color.BgRed, color.White}.Println(message)
 }
