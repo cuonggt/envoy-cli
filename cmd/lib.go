@@ -1,6 +1,10 @@
 package cmd
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/gookit/color"
+)
 
 func InSlice(needle string, haystack []string) bool {
 	for _, v := range haystack {
@@ -13,4 +17,12 @@ func InSlice(needle string, haystack []string) bool {
 
 func DisplayOutput(host string, line string) {
 	fmt.Printf("[%s]: %s", host, line)
+}
+
+func OutputError(message string) {
+	color.Style{color.BgRed, color.White}.Println(message)
+}
+
+func OutputInfo(message string) {
+	color.Style{color.Green}.Println(message)
 }

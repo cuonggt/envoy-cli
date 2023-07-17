@@ -16,7 +16,7 @@ var initCmd = &cobra.Command{
 
 		_, err := os.Stat(cwd + "/Envoyfile")
 		if err == nil {
-			fmt.Println("Envoy file already exists!")
+			OutputError("Envoy file already exists!")
 			return
 		}
 
@@ -38,7 +38,7 @@ tasks:
 
 		f.Close()
 
-		fmt.Println("Envoy file created!")
+		OutputInfo("Envoy file created!")
 	},
 }
 
