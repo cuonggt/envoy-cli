@@ -46,9 +46,10 @@ func LoadTaskContainer() TaskContainer {
 			}
 		}
 		taskContainer.Tasks[taskName] = Task{
-			name:   taskName,
-			script: viper.GetString("tasks." + taskName + ".script"),
-			hosts:  hosts,
+			name:     taskName,
+			script:   viper.GetString("tasks." + taskName + ".script"),
+			hosts:    hosts,
+			parallel: viper.GetBool("tasks." + taskName + ".parallel"),
 		}
 	}
 
@@ -57,7 +58,7 @@ func LoadTaskContainer() TaskContainer {
 	return taskContainer
 }
 
-func (c *TaskContainer) GetServer(name string) (*Server, error) {
+func (c TaskContainer) GetServer(name string) (*Server, error) {
 	server, ok := c.Servers[name]
 
 	if !ok {
@@ -67,7 +68,7 @@ func (c *TaskContainer) GetServer(name string) (*Server, error) {
 	return &server, nil
 }
 
-func (c *TaskContainer) GetTask(name string) (*Task, error) {
+func (c TaskContainer) GetTask(name string) (*Task, error) {
 	task, ok := c.Tasks[name]
 
 	if !ok {
@@ -81,7 +82,7 @@ func (c *TaskContainer) GetTask(name string) (*Task, error) {
 	return &task, nil
 }
 
-func (c *TaskContainer) GetStory(name string) []string {
+func (c TaskContainer) GetStory(name string) []string {
 	story, ok := c.Stories[name]
 	if !ok {
 		return nil

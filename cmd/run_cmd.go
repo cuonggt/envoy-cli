@@ -22,20 +22,27 @@ func runTask(container TaskContainer, name string) {
 		return
 	}
 
+	runTaskOverSSH(*task)
+}
+
+func runTaskOverSSH(task Task) {
 	if pretend {
 		fmt.Printf("%s", task.script)
 		return
 	}
 
-	for _, host := range task.hosts {
-		if err := task.Run(host, DisplayOutput); err != nil {
-			fmt.Println(err)
-		}
-	}
+	passToRemoteProcessor(task)
 }
 
-func DisplayOutput(host string, line string) {
-	fmt.Printf("[%s]: %s", host, line)
+func passToRemoteProcessor(task Task) {
+	getRemoteProcessor(task).Run(task)
+}
+
+func getRemoteProcessor(task Task) RemoteProcessor {
+	if task.parallel {
+		return ParallelSSH{}
+	}
+	return SSH{}
 }
 
 var runCmd = &cobra.Command{

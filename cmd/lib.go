@@ -1,5 +1,7 @@
 package cmd
 
+import "fmt"
+
 func InSlice(needle string, haystack []string) bool {
 	for _, v := range haystack {
 		if v == needle {
@@ -7,4 +9,8 @@ func InSlice(needle string, haystack []string) bool {
 		}
 	}
 	return false
+}
+
+func DisplayOutput(host string, line string) {
+	fmt.Printf("[%s]: %s", host, line)
 }
