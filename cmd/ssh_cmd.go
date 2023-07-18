@@ -27,7 +27,7 @@ var sshCmd = &cobra.Command{
 
 		server, err := getServer(container, args)
 		if err != nil {
-			fmt.Println(err)
+			output.Error(fmt.Sprintf("%s", err))
 			return
 		}
 
@@ -38,7 +38,7 @@ var sshCmd = &cobra.Command{
 		ssh.Stdout = os.Stdout
 
 		if err := ssh.Run(); err != nil {
-			fmt.Println(err)
+			output.Error(fmt.Sprintf("%s", err))
 		}
 	},
 }

@@ -10,6 +10,7 @@ import (
 )
 
 var pretend bool
+var hostWithColors = []string{}
 
 func getTasks(container TaskContainer, taskName string) []string {
 	if story := container.GetStory(taskName); story != nil {
@@ -45,13 +46,13 @@ func passToRemoteProcessor(task Task) int {
 		if line == "" {
 			return
 		}
-		hostColor := getHostColor(host)
-		hostColor.Printf("[%s]", host)
+		hostColor := getHostColor(host).Sprintf("[%s]", host)
 		if outType == "err" {
-			color.Red.Printf(": %s\n", line)
+			line = color.Red.Sprintf("%s", line)
 		} else {
-			color.Printf(": %s\n", line)
+			line = color.Sprintf("%s", line)
 		}
+		fmt.Printf("%s: %s\n", hostColor, line)
 	})
 }
 
@@ -61,8 +62,6 @@ func getRemoteProcessor(task Task) RemoteProcessor {
 	}
 	return SSH{}
 }
-
-var hostWithColors = []string{}
 
 func getHostColor(host string) color.Color {
 	colors := []color.Color{color.Yellow, color.Cyan, color.Magenta, color.Blue}

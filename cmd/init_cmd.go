@@ -16,13 +16,14 @@ var initCmd = &cobra.Command{
 
 		_, err := os.Stat(cwd + "/Envoyfile")
 		if err == nil {
-			OutputError("Envoy file already exists!")
+			output.Error("Envoy file already exists!")
 			return
 		}
 
 		f, err := os.Create(cwd + "/Envoyfile")
 		if err != nil {
-			fmt.Println(err)
+			output.Error(fmt.Sprintf("%s", err))
+			return
 		}
 
 		f.WriteString(fmt.Sprintf(`servers:
@@ -38,7 +39,7 @@ tasks:
 
 		f.Close()
 
-		OutputInfo("Envoy file created!")
+		output.Info("Envoy file created!")
 	},
 }
 

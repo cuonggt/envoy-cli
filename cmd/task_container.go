@@ -28,7 +28,7 @@ func LoadTaskContainer() TaskContainer {
 	viper.SetConfigType("yaml")
 
 	if err := viper.ReadInConfig(); err != nil {
-		fmt.Println(err)
+		output.Error(fmt.Sprintf("%s", err))
 		return taskContainer
 	}
 

@@ -4,8 +4,7 @@ import (
 	"os/exec"
 )
 
-type SSH struct {
-}
+type SSH struct{}
 
 func (s SSH) Run(task Task, callback func(string, string, string)) int {
 	processes := task.GetProcesses()

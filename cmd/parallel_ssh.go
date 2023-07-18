@@ -5,8 +5,7 @@ import (
 	"sync"
 )
 
-type ParallelSSH struct {
-}
+type ParallelSSH struct{}
 
 func (s ParallelSSH) Run(task Task, callback func(string, string, string)) int {
 	processes := task.GetProcesses()
