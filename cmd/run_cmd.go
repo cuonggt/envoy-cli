@@ -19,13 +19,13 @@ func getTasks(container TaskContainer, taskName string) []string {
 	return []string{taskName}
 }
 
-func runTask(container TaskContainer, name string) int {
+func runTask(container TaskContainer, name string) (int, error) {
 	task, err := container.GetTask(name)
 	if err != nil {
-		return 1
+		return 1, err
 	}
 
-	return runTaskOverSSH(*task)
+	return runTaskOverSSH(*task), nil
 }
 
 func runTaskOverSSH(task Task) int {
@@ -82,7 +82,12 @@ var runCmd = &cobra.Command{
 		tasks := getTasks(container, args[0])
 
 		for _, v := range tasks {
-			thisCode := runTask(container, v)
+			thisCode, err := runTask(container, v)
+
+			if err != nil {
+				output.Error(fmt.Sprintf("%s", err))
+				continue
+			}
 
 			if thisCode > 0 {
 				fmt.Printf("[%s] %s\n", color.Red.Sprint("✗"), color.Red.Sprint("This task did not complete successfully on one of your servers."))
