@@ -18,7 +18,7 @@ var output = ConsoleOutput{}
 
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
-		fmt.Println(err)
+		output.Error(fmt.Sprintf("%s", err))
 		os.Exit(1)
 	}
 }
