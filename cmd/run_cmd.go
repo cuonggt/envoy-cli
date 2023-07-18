@@ -18,27 +18,26 @@ func getTasks(container TaskContainer, taskName string) []string {
 	return []string{taskName}
 }
 
-func runTask(container TaskContainer, name string) {
+func runTask(container TaskContainer, name string) int {
 	task, err := container.GetTask(name)
 	if err != nil {
-		fmt.Println(err)
-		return
+		return 1
 	}
 
-	runTaskOverSSH(*task)
+	return runTaskOverSSH(*task)
 }
 
-func runTaskOverSSH(task Task) {
+func runTaskOverSSH(task Task) int {
 	if pretend {
 		fmt.Printf("%s", task.script)
-		return
+		return 1
 	}
 
-	passToRemoteProcessor(task)
+	return passToRemoteProcessor(task)
 }
 
-func passToRemoteProcessor(task Task) {
-	getRemoteProcessor(task).Run(task, func(outType string, host string, line string) {
+func passToRemoteProcessor(task Task) int {
+	return getRemoteProcessor(task).Run(task, func(outType string, host string, line string) {
 		if strings.HasPrefix(line, "Warning: Permanently added ") {
 			return
 		}
@@ -84,7 +83,12 @@ var runCmd = &cobra.Command{
 		tasks := getTasks(container, args[0])
 
 		for _, v := range tasks {
-			runTask(container, v)
+			thisCode := runTask(container, v)
+
+			if thisCode > 0 {
+				fmt.Printf("[%s] %s", color.Red.Sprint("✗"), color.Red.Sprint("This task did not complete successfully on one of your servers."))
+				break
+			}
 		}
 	},
 }

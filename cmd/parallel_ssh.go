@@ -1,15 +1,17 @@
 package cmd
 
 import (
-	"fmt"
+	"os/exec"
 	"sync"
 )
 
 type ParallelSSH struct {
 }
 
-func (s ParallelSSH) Run(task Task, callback func(string, string, string)) {
+func (s ParallelSSH) Run(task Task, callback func(string, string, string)) int {
 	processes := task.GetProcesses()
+
+	code := 0
 
 	var wg sync.WaitGroup
 
@@ -21,10 +23,17 @@ func (s ParallelSSH) Run(task Task, callback func(string, string, string)) {
 		go func() {
 			defer wg.Done()
 			if err := process.Run(callback); err != nil {
-				fmt.Println(err)
+				exitErr, ok := err.(*exec.ExitError)
+				if ok {
+					code += exitErr.ExitCode()
+				} else {
+					code++
+				}
 			}
 		}()
 	}
 
 	wg.Wait()
+
+	return code
 }
