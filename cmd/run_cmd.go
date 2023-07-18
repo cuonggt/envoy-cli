@@ -6,6 +6,7 @@ import (
 
 	"github.com/gookit/color"
 	"github.com/spf13/cobra"
+	"golang.org/x/exp/slices"
 )
 
 var pretend bool
@@ -45,7 +46,8 @@ func passToRemoteProcessor(task Task) {
 		if line == "" {
 			return
 		}
-		color.Yellow.Printf("[%s]", host)
+		hostColor := getHostColor(host)
+		hostColor.Printf("[%s]", host)
 		if outType == "err" {
 			color.Red.Printf(": %s\n", line)
 		} else {
@@ -59,6 +61,17 @@ func getRemoteProcessor(task Task) RemoteProcessor {
 		return ParallelSSH{}
 	}
 	return SSH{}
+}
+
+var hostWithColors = []string{}
+
+func getHostColor(host string) color.Color {
+	colors := []color.Color{color.Yellow, color.Cyan, color.Magenta, color.Blue}
+	if !slices.Contains(hostWithColors, host) {
+		hostWithColors = append(hostWithColors, host)
+	}
+
+	return colors[slices.Index(hostWithColors, host)%len(colors)]
 }
 
 var runCmd = &cobra.Command{

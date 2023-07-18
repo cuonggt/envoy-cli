@@ -6,6 +6,7 @@ require (
 	github.com/gookit/color v1.5.3
 	github.com/spf13/cobra v1.7.0
 	github.com/spf13/viper v1.16.0
+	golang.org/x/exp v0.0.0-20230713183714-613f0c0eb8a1
 )
 
 require (

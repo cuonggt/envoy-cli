@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/spf13/viper"
+	"golang.org/x/exp/slices"
 )
 
 type Server struct {
@@ -41,7 +42,7 @@ func LoadTaskContainer() TaskContainer {
 		on := viper.GetStringSlice("tasks." + taskName + ".on")
 		hosts := []string{}
 		for k, v := range taskContainer.Servers {
-			if len(on) == 0 || InSlice(k, on) {
+			if len(on) == 0 || slices.Contains(on, k) {
 				hosts = append(hosts, v.hosts...)
 			}
 		}

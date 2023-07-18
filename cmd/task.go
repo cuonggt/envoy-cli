@@ -3,6 +3,8 @@ package cmd
 import (
 	"fmt"
 	"os/exec"
+
+	"golang.org/x/exp/slices"
 )
 
 type Task struct {
@@ -15,7 +17,7 @@ type Task struct {
 func (t Task) GetProcess(host string) Process {
 	localhosts := []string{"local", "localhost", "127.0.0.1"}
 
-	if InSlice(host, localhosts) {
+	if slices.Contains(localhosts, host) {
 		return Process{
 			target:  host,
 			command: exec.Command("/bin/bash", "-c", t.script),
