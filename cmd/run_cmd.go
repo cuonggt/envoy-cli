@@ -86,7 +86,7 @@ var runCmd = &cobra.Command{
 			thisCode := runTask(container, v)
 
 			if thisCode > 0 {
-				fmt.Printf("[%s] %s", color.Red.Sprint("✗"), color.Red.Sprint("This task did not complete successfully on one of your servers."))
+				fmt.Printf("[%s] %s\n", color.Red.Sprint("✗"), color.Red.Sprint("This task did not complete successfully on one of your servers."))
 				break
 			}
 		}

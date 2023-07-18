@@ -52,5 +52,5 @@ func (p Process) Run(callback func(string, string, string)) error {
 
 	wg.Wait()
 
-	return nil
+	return p.command.Wait()
 }
