@@ -36,4 +36,4 @@ jobs:
         md5sum: false
         overwrite: true
         retry: 5
-        ldflags: -w -X "github.com/cuonggt/envoy-cli/config.Version=${{ github.ref_name }}"
+        ldflags: -w
