@@ -1,4 +1,16 @@
-Envoyfile
-envoy-cli
+/Envoyfile
+/envoy-cli
+/dist
+/.goreleaser.generated.yml
 
-dist/
+# VS Code
+.vscode
+
+# IntelliJ
+.idea
+
+# macOS
+.DS_Store
+
+# vim
+*.swp
