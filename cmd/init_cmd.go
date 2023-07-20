@@ -26,7 +26,7 @@ var initCmd = &cobra.Command{
 			return
 		}
 
-		f.WriteString(fmt.Sprintf(`servers:
+		_, err = f.WriteString(fmt.Sprintf(`servers:
   web:
     - %s
 
@@ -38,6 +38,11 @@ tasks:
       git pull origin master`, args[0]))
 
 		f.Close()
+
+		if err != nil {
+			output.Error(fmt.Sprintf("%s", err))
+			return
+		}
 
 		output.Info("Envoy file created!")
 	},
