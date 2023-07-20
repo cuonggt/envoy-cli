@@ -21,7 +21,7 @@ Install Envoy CLI with `brew install envoy`.
 Linux & Mac users can install it directly to `/usr/local/bin/envoy` with:
 
 ```bash
-sudo bash < <(curl -sL https://raw.githubusercontent.com/cuonggt/envoy-cli/develop/install.sh)
+sudo bash < <(curl -sL https://raw.githubusercontent.com/cuonggt/envoy-cli/master/install.sh)
 ```
 
 <a name="download-static-binary-window-linux-mac"></a>
