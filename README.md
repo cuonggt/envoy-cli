@@ -13,12 +13,12 @@ Envoy CLI runs as a single binary and can be installed in different ways.
 <a name="install-via-brew-mac"></a>
 ### Install via Brew (Mac)
 
-Install Envoy CLI with `brew install envoy-cli`.
+Install Envoy CLI with `brew install envoy`.
 
 <a name="install-via-bash-script-linux-mac"></a>
 ### Install via bash script (Linux & Mac)
 
-Linux & Mac users can install it directly to `/usr/local/bin/envoy-cli` with:
+Linux & Mac users can install it directly to `/usr/local/bin/envoy` with:
 
 ```bash
 sudo bash < <(curl -sL https://raw.githubusercontent.com/cuonggt/envoy-cli/develop/install.sh)
@@ -27,7 +27,7 @@ sudo bash < <(curl -sL https://raw.githubusercontent.com/cuonggt/envoy-cli/devel
 <a name="download-static-binary-window-linux-mac"></a>
 ### Download static binary (Windows, Linux and Mac)
 
-Static binaries can always be found on the [releases](https://github.com/cuonggt/envoy-cli/releases/latest). The `envoy-cli` binary can extracted and copied to your `$PATH`, or simply run as `./envoy-cli`.
+Static binaries can always be found on the [releases](https://github.com/cuonggt/envoy-cli/releases/latest). The `envoy` binary can extracted and copied to your `$PATH`, or simply run as `./envoy`.
 
 <a name="compile-from-source"></a>
 ### Compile from source
@@ -48,7 +48,7 @@ go build -ldflags "-s -w"
 <a name="quickstart"></a>
 ## Quickstart
 
-Once Envoy has been installed, the Envoy binary will be available. Inside your app directory, run `envoy-cli init`. Now edit the new file `Envoyfile`. It could look as simple as this:
+Once Envoy has been installed, the Envoy binary will be available. Inside your app directory, run `envoy init user@host`. Now edit the new file `Envoyfile`. It could look as simple as this:
 
 ```
 servers:
@@ -65,7 +65,7 @@ tasks:
 Now you’re ready to run the task `deploy` to deploy to the servers:
 
 ```shell
-envoy-cli run deploy
+envoy run deploy
 ```
 
 <a name="writing-tasks"></a>
@@ -171,7 +171,7 @@ stories:
 Once the story has been written, you may invoke it in the same way you would invoke a task:
 
 ```shell
-envoy-cli run deploy
+envoy run deploy
 ```
 
 <a name="running-tasks"></a>
@@ -180,5 +180,5 @@ envoy-cli run deploy
 To run a task or story that is defined in your application's `Envoyfile` file, execute Envoy's `run` command, passing the name of the task or story you would like to execute. Envoy will execute the task and display the output from your remote servers as the task is running:
 
 ```shell
-envoy-cli run deploy
+envoy run deploy
 ```
