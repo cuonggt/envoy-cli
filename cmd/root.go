@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"fmt"
 	"os"
 
 	"github.com/spf13/cobra"
@@ -18,7 +17,6 @@ var output = ConsoleOutput{}
 
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
-		output.Error(fmt.Sprintf("%s", err))
 		os.Exit(1)
 	}
 }
