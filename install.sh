@@ -17,28 +17,8 @@ case $OS in
 Linux)
     OS='Linux'
     ;;
-FreeBSD)
-    OS='freebsd'
-    echo 'OS not supported'
-    exit 2
-    ;;
-NetBSD)
-    OS='netbsd'
-    echo 'OS not supported'
-    exit 2
-    ;;
-OpenBSD)
-    OS='openbsd'
-    echo 'OS not supported'
-    exit 2
-    ;;
 Darwin)
     OS='Darwin'
-    ;;
-SunOS)
-    OS='solaris'
-    echo 'OS not supported'
-    exit 2
     ;;
 *)
     echo 'OS not supported'
