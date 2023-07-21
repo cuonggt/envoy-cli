@@ -10,11 +10,6 @@ Envoy CLI is a tool for executing common tasks you run on your remote servers. U
 
 Envoy CLI runs as a single binary and can be installed in different ways.
 
-<a name="install-via-brew-mac"></a>
-### Install via Brew (Mac)
-
-Install Envoy CLI with `brew install envoy`.
-
 <a name="install-via-bash-script-linux-mac"></a>
 ### Install via bash script (Linux & Mac)
 
@@ -24,8 +19,8 @@ Linux & Mac users can install it directly to `/usr/local/bin/envoy` with:
 sudo bash < <(curl -sL https://raw.githubusercontent.com/cuonggt/envoy-cli/master/install.sh)
 ```
 
-<a name="download-static-binary-window-linux-mac"></a>
-### Download static binary (Windows, Linux and Mac)
+<a name="download-static-binary-linux-mac"></a>
+### Download static binary (Linux and Mac)
 
 Static binaries can always be found on the [releases](https://github.com/cuonggt/envoy-cli/releases/latest). The `envoy` binary can extracted and copied to your `$PATH`, or simply run as `./envoy`.
 
@@ -43,6 +38,7 @@ Build the Envoy CLI binary:
 
 ```shell
 go build -ldflags "-s -w"
+mv envoy-cli /usr/local/bin/envoy
 ```
 
 <a name="quickstart"></a>
