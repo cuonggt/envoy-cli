@@ -30,10 +30,10 @@ esac
 OS_type="$(uname -m)"
 case "$OS_type" in
 x86_64 | amd64)
-    OS_type='amd64'
+    OS_type='x86_64'
     ;;
 i?86 | x86)
-    OS_type='386'
+    OS_type='i386'
     ;;
 aarch64 | arm64)
     OS_type='arm64'
