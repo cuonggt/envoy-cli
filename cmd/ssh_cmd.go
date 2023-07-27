@@ -31,7 +31,7 @@ var sshCmd = &cobra.Command{
 			return
 		}
 
-		ssh := exec.Command("ssh", server.hosts[0])
+		ssh := exec.Command("ssh", server.Hosts[0])
 
 		ssh.Stdin = os.Stdin
 		ssh.Stderr = os.Stderr

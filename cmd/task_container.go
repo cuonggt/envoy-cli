@@ -8,7 +8,7 @@ import (
 )
 
 type Server struct {
-	hosts []string
+	Hosts []string
 }
 
 type TaskContainer struct {
@@ -34,7 +34,7 @@ func LoadTaskContainer() TaskContainer {
 
 	for serverName := range viper.GetStringMap("servers") {
 		taskContainer.Servers[serverName] = Server{
-			hosts: viper.GetStringSlice("servers." + serverName),
+			Hosts: viper.GetStringSlice("servers." + serverName),
 		}
 	}
 
@@ -43,14 +43,14 @@ func LoadTaskContainer() TaskContainer {
 		hosts := []string{}
 		for k, v := range taskContainer.Servers {
 			if len(on) == 0 || slices.Contains(on, k) {
-				hosts = append(hosts, v.hosts...)
+				hosts = append(hosts, v.Hosts...)
 			}
 		}
 		taskContainer.Tasks[taskName] = Task{
-			name:     taskName,
-			script:   viper.GetString("tasks." + taskName + ".script"),
-			hosts:    hosts,
-			parallel: viper.GetBool("tasks." + taskName + ".parallel"),
+			Name:     taskName,
+			Script:   viper.GetString("tasks." + taskName + ".script"),
+			Hosts:    hosts,
+			Parallel: viper.GetBool("tasks." + taskName + ".parallel"),
 		}
 	}
 
@@ -76,7 +76,7 @@ func (c TaskContainer) GetTask(name string) (*Task, error) {
 		return nil, fmt.Errorf("Task \"%s\" is not defined", name)
 	}
 
-	if task.script == "" {
+	if task.Script == "" {
 		return nil, fmt.Errorf("Task \"%s\" has no script", name)
 	}
 

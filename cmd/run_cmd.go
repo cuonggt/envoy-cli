@@ -30,7 +30,7 @@ func runTask(container TaskContainer, name string) (int, error) {
 
 func runTaskOverSSH(task Task) int {
 	if pretend {
-		fmt.Printf("%s", task.script)
+		fmt.Printf("%s", task.Script)
 		return 1
 	}
 
@@ -57,7 +57,7 @@ func passToRemoteProcessor(task Task) int {
 }
 
 func getRemoteProcessor(task Task) RemoteProcessor {
-	if task.parallel {
+	if task.Parallel {
 		return ParallelSSH{}
 	}
 	return SSH{}

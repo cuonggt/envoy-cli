@@ -8,10 +8,10 @@ import (
 )
 
 type Task struct {
-	name     string
-	hosts    []string
-	script   string
-	parallel bool
+	Name     string
+	Hosts    []string
+	Script   string
+	Parallel bool
 }
 
 func (t Task) GetProcess(host string) Process {
@@ -19,8 +19,8 @@ func (t Task) GetProcess(host string) Process {
 
 	if slices.Contains(localhosts, host) {
 		return Process{
-			target:  host,
-			command: exec.Command("/bin/bash", "-c", t.script),
+			Target:  host,
+			Command: exec.Command("/bin/bash", "-c", t.Script),
 		}
 	}
 
@@ -28,17 +28,17 @@ func (t Task) GetProcess(host string) Process {
 
 set -e
 %s
-EOF-ENVOY`, t.script)
+EOF-ENVOY`, t.Script)
 
 	return Process{
-		target:  host,
-		command: exec.Command("ssh", host, command),
+		Target:  host,
+		Command: exec.Command("ssh", host, command),
 	}
 }
 
 func (t Task) GetProcesses() []Process {
 	processes := []Process{}
-	for _, v := range t.hosts {
+	for _, v := range t.Hosts {
 		processes = append(processes, t.GetProcess(v))
 	}
 	return processes

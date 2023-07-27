@@ -7,22 +7,22 @@ import (
 )
 
 type Process struct {
-	target  string
-	command *exec.Cmd
+	Target  string
+	Command *exec.Cmd
 }
 
 func (p Process) Run(callback func(string, string, string)) error {
-	stdout, err := p.command.StdoutPipe()
+	stdout, err := p.Command.StdoutPipe()
 	if err != nil {
 		return err
 	}
 
-	stderr, err := p.command.StderrPipe()
+	stderr, err := p.Command.StderrPipe()
 	if err != nil {
 		return err
 	}
 
-	if err = p.command.Start(); err != nil {
+	if err = p.Command.Start(); err != nil {
 		return err
 	}
 
@@ -36,7 +36,7 @@ func (p Process) Run(callback func(string, string, string)) error {
 		outScanner := bufio.NewScanner(stdout)
 		for outScanner.Scan() {
 			line := outScanner.Text()
-			callback("out", p.target, line)
+			callback("out", p.Target, line)
 		}
 	}()
 
@@ -46,11 +46,11 @@ func (p Process) Run(callback func(string, string, string)) error {
 		errScanner := bufio.NewScanner(stderr)
 		for errScanner.Scan() {
 			line := errScanner.Text()
-			callback("err", p.target, line)
+			callback("err", p.Target, line)
 		}
 	}()
 
 	wg.Wait()
 
-	return p.command.Wait()
+	return p.Command.Wait()
 }
